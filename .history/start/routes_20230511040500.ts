@@ -69,15 +69,16 @@ Route.group(() => {
     
     const disciplina = await Disciplina.find(request.param('id'))
     if (!disciplina) response.status(404).send('Not found ')
-
     await disciplina?.delete().then(() =>{ // disciplina porde n existir 
       response.status(200).json(disciplina)
-    })
+    }).catch(() => {
+      response.send('Falha ao deletar disciplina ')
+    }) 
     
   })
 
   Route.put('/disciplinas/:id', async ({response, params, request}) => {
-     
+    
     const searchPayload = {id: params.id}
     const persistencePayload = { 
         name: request.body().name, 
@@ -92,6 +93,7 @@ Route.group(() => {
   })
 
 }).prefix('/rotas')  
+
 
 
 

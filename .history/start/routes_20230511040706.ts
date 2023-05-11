@@ -77,7 +77,7 @@ Route.group(() => {
   })
 
   Route.put('/disciplinas/:id', async ({response, params, request}) => {
-     
+    
     const searchPayload = {id: params.id}
     const persistencePayload = { 
         name: request.body().name, 

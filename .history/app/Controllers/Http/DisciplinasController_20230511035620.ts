@@ -90,7 +90,7 @@ export default class DisciplinasController {
             description: request.body().description, 
             period: request.body().period 
         }   
-        // atualiza ou cria 
+
         const disciplina = await Disciplina.updateOrCreate(searchPayload, persistencePayload)
         disciplina.save() // atualizacao  de um dado ja existente 
         response.status(200).json(disciplina)

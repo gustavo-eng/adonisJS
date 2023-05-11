@@ -32,7 +32,6 @@ Route.group(() => {
   // Route.get('/disciplinas/:id', "DisciplinasController.show")
   // Route.put('/disciplinas/:id', "DisciplinasController.update")
   // Route.delete('/disciplinas/:id', "DisciplinasController.destroy")
-
   Route.resource('/disciplinas', "DisciplinasController").apiOnly() // cria automaticamente as principais rotas que a entidade vai precisar 
   // .apyOnly -> traz apenas rotas de api para o controller 
   // sem isso rotas para outras  funcoes sao criadas 
@@ -45,7 +44,7 @@ import Disciplina from 'App/Models/Disciplina'
 Route.group(() => {
 
   
-  Route.get('/disciplinas', async ({response}) => {
+  Route.get('/disciplina', async ({response}) => {
     response.status(200).json(await Disciplina.all())
   })
 
@@ -57,7 +56,7 @@ Route.group(() => {
     
   })
 
-  Route.get('/disciplinas/:id', async ({request, response }) => {
+  Route.get('/disciplina/:id', async ({request, response }) => {
   
     const disciplina = await Disciplina.find(request.param('id'))
     response.status(200).json(disciplina)
@@ -65,19 +64,25 @@ Route.group(() => {
   })
 
 
-  Route.delete('/disciplinas/:id', async ({request, response}) => {
+  Route.delete('/disciplina/:id', async ({request, response}) => {
+
     
     const disciplina = await Disciplina.find(request.param('id'))
-    if (!disciplina) response.status(404).send('Not found ')
-
+    
     await disciplina?.delete().then(() =>{ // disciplina porde n existir 
-      response.status(200).json(disciplina)
-    })
+      response.send('disciplina deletada com sucesso')
+      console.log('disciplina deletada com sucesso')
+    }).catch(() => {
+      response.send('Falha ao deletar disciplina ')
+      console.log('Falha ao deletar disciplina ')
+    }) 
+    
+    // response.status(200).json(disciplina)
     
   })
 
-  Route.put('/disciplinas/:id', async ({response, params, request}) => {
-     
+  Route.put('/disciplina/:id', async ({response, params, request}) => {
+    
     const searchPayload = {id: params.id}
     const persistencePayload = { 
         name: request.body().name, 
@@ -92,30 +97,6 @@ Route.group(() => {
   })
 
 }).prefix('/rotas')  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -173,7 +154,7 @@ Route.put('simple/alteraLista/:nome/:nomeAltera', ({request, response}) => {
 
 // ------ *** Middleware *** ------ 
 
-Route.get("simple/middleware", () => {
+Route.get("simple/middleware", ()) => {
   return 'Show user '
 }).middleware( async ( ) => {
   console.log('Inside middleware ')

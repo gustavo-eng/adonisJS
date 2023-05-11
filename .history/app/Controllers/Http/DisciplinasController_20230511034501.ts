@@ -38,15 +38,12 @@ export default class DisciplinasController {
         }
     }
 
-    public async  index({response} : HttpContextContract) {
+    public async  index() {
         console.log('ENTROU NA INDEX de DisciplinasControllers')
-
+     
         const disciplinas = await Disciplina.all()
-        if (disciplinas) {
-            response.status(200).json(disciplinas)
-
-        } else  {
-            response.status(404).send("Not found ")
+        return {
+            data: disciplinas
         }
 
     }
@@ -55,30 +52,25 @@ export default class DisciplinasController {
         console.log('ENTROU NA SHOW de DisciplinasControllers')
         const id = request.param('id')
         const disciplinas = await Disciplina.find(id)
-        if(disciplinas) {
-            response.status(200).json(disciplinas)
-
-        } else { 
-            response.status(404).json({msg: "Course not found !"})
-        }
+        response.status(200).json(disciplinas)
+        // return {
+        //     data: disciplinas, 
+            
+        // }  
         
     }
 
     public async destroy({request, response}: HttpContextContract) {
         console.log('ENTROU NA DESTROY de DisciplinasControllers')
+
         const disciplina = await Disciplina.find(request.param('id'))
-        if(!disciplina) {
-            response.status(404).json({msg: "Course not found !"})
-        } else {
-            response.json(disciplina)
-            await disciplina?.delete()
-        }
-        
-        //response.status(204).json(disciplina)
+        response.send(disciplina)
+        await disciplina?.delete()
+        response.status(204).json(disciplina)
         
     }
 
-    public async update({params, request, response}:HttpContextContract) { 
+    public async update({params, request,response}:HttpContextContract) { 
         console.log('ENTROU NA UPDATE de DisciplinasControllers')
         
         // const disciplina = await Disciplina.find(request.param('id'));
@@ -90,7 +82,7 @@ export default class DisciplinasController {
             description: request.body().description, 
             period: request.body().period 
         }   
-        // atualiza ou cria 
+
         const disciplina = await Disciplina.updateOrCreate(searchPayload, persistencePayload)
         disciplina.save() // atualizacao  de um dado ja existente 
         response.status(200).json(disciplina)

@@ -45,7 +45,7 @@ import Disciplina from 'App/Models/Disciplina'
 Route.group(() => {
 
   
-  Route.get('/disciplinas', async ({response}) => {
+  Route.get('/disciplina', async ({response}) => {
     response.status(200).json(await Disciplina.all())
   })
 
@@ -57,7 +57,7 @@ Route.group(() => {
     
   })
 
-  Route.get('/disciplinas/:id', async ({request, response }) => {
+  Route.get('/disciplina/:id', async ({request, response }) => {
   
     const disciplina = await Disciplina.find(request.param('id'))
     response.status(200).json(disciplina)
@@ -65,19 +65,25 @@ Route.group(() => {
   })
 
 
-  Route.delete('/disciplinas/:id', async ({request, response}) => {
+  Route.delete('/disciplina/:id', async ({request, response}) => {
+
     
     const disciplina = await Disciplina.find(request.param('id'))
-    if (!disciplina) response.status(404).send('Not found ')
-
+    
     await disciplina?.delete().then(() =>{ // disciplina porde n existir 
-      response.status(200).json(disciplina)
-    })
+      response.send('disciplina deletada com sucesso')
+      console.log('disciplina deletada com sucesso')
+    }).catch(() => {
+      response.send('Falha ao deletar disciplina ')
+      console.log('Falha ao deletar disciplina ')
+    }) 
+    
+    // response.status(200).json(disciplina)
     
   })
 
   Route.put('/disciplinas/:id', async ({response, params, request}) => {
-     
+    
     const searchPayload = {id: params.id}
     const persistencePayload = { 
         name: request.body().name, 
@@ -92,6 +98,7 @@ Route.group(() => {
   })
 
 }).prefix('/rotas')  
+
 
 
 
