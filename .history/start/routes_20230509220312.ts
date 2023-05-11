@@ -32,13 +32,13 @@ Route.group(() => {
   // Route.get('/disciplinas/:id', "DisciplinasController.show")
   // Route.put('/disciplinas/:id', "DisciplinasController.update")
   // Route.delete('/disciplinas/:id', "DisciplinasController.destroy")
+
   Route.resource('/disciplinas', "DisciplinasController").apiOnly() // cria automaticamente as principais rotas que a entidade vai precisar 
   // .apyOnly -> traz apenas rotas de api para o controller 
   // sem isso rotas para outras  funcoes sao criadas 
 
 }).prefix('/api')
 
-// --- 
 import Disciplina from 'App/Models/Disciplina'
 
 Route.group(() => {
@@ -96,12 +96,7 @@ Route.group(() => {
 
   })
 
-}).prefix('/rotas')  
-
-
-
-
-
+}).prefix('/rotas') 
 
 // ---------------  SIMPLE --------------- ---------------
 let list = [  
@@ -126,12 +121,13 @@ Route.get('simple/lista', ({response}) => {
 })
 
 Route.post('simple/lista/:nome/:idade', ({request, response}) => {
-  // const {name, age} = request.body() 
   const nome = request.param('nome')
   const idade = request.param('idade')
   list.push({nome: nome, idade: idade})
   response.status(200).send(list)
   console.log(list)
+  // const {name, age} = request.body() 
+
 })
 
 Route.delete('/simple/deletaLista', ({response}) => {
@@ -140,7 +136,7 @@ Route.delete('/simple/deletaLista', ({response}) => {
 })
 
 Route.put('simple/alteraLista/:nome/:nomeAltera', ({request, response}) => {
-  // const nome = request.params()[0]
+
   const nome = request.param('nome')
   const nomeAltera = request.param('nomeAltera')
   for(let i = 0; i < list.length ; i++) {
@@ -148,18 +144,10 @@ Route.put('simple/alteraLista/:nome/:nomeAltera', ({request, response}) => {
       list[i] = {nome: nomeAltera, idade: list[i].idade}
     }
   }
+
   response.status(200).send(list)
 })
 
-
-// ------ *** Middleware *** ------ 
-
-Route.get("simple/middleware", ({response}) => {
-  return 'Show user '
-}).middleware( async (ctx, next) => {
-  console.log('Inside middleware ')
-  return console.log('Parou aqui ')
-})
 
 
 

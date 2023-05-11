@@ -96,7 +96,7 @@ Route.group(() => {
 
   })
 
-}).prefix('/rotas')  
+}).prefix('/rotas') 
 
 
 

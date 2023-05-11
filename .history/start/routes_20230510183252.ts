@@ -32,13 +32,13 @@ Route.group(() => {
   // Route.get('/disciplinas/:id', "DisciplinasController.show")
   // Route.put('/disciplinas/:id', "DisciplinasController.update")
   // Route.delete('/disciplinas/:id', "DisciplinasController.destroy")
+
   Route.resource('/disciplinas', "DisciplinasController").apiOnly() // cria automaticamente as principais rotas que a entidade vai precisar 
   // .apyOnly -> traz apenas rotas de api para o controller 
   // sem isso rotas para outras  funcoes sao criadas 
 
 }).prefix('/api')
 
-// --- 
 import Disciplina from 'App/Models/Disciplina'
 
 Route.group(() => {
@@ -96,12 +96,7 @@ Route.group(() => {
 
   })
 
-}).prefix('/rotas')  
-
-
-
-
-
+}).prefix('/rotas') 
 
 // ---------------  SIMPLE --------------- ---------------
 let list = [  
@@ -158,7 +153,7 @@ Route.get("simple/middleware", ({response}) => {
   return 'Show user '
 }).middleware( async (ctx, next) => {
   console.log('Inside middleware ')
-  return console.log('Parou aqui ')
+  return false
 })
 
 
